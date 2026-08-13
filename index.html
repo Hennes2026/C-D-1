@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kölle Quiz-Gewinnspiel</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #f7f3e8, #e8eef7);
+      color: #172b4d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+      background: white;
+      border-radius: 22px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 6vw, 44px);
+      color: #1d3f70;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      font-size: 19px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid #b7c3d4;
+      border-radius: 12px;
+      font-size: 18px;
+      text-align: center;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #1d3f70;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 14px;
+      padding: 16px;
+      border: 0;
+      border-radius: 12px;
+      background: #1d3f70;
+      color: white;
+      font-size: 19px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16345d;
+    }
+
+    .message {
+      display: none;
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 14px;
+      font-size: 19px;
+      line-height: 1.5;
+      font-weight: bold;
+    }
+
+    .wrong {
+      background: #fff0f0;
+      color: #a32626;
+      border: 2px solid #e6a0a0;
+    }
+
+    .correct {
+      background: #eef9ef;
+      color: #216b2a;
+      border: 2px solid #9bd1a1;
+    }
+
+    #prize {
+      display: none;
+      margin-top: 28px;
+    }
+
+    #prize img {
+      display: block;
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      margin: 0 auto 22px;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+    }
+
+    .prize-text {
+      font-size: 20px;
+      line-height: 1.55;
+      font-weight: bold;
+      color: #1d3f70;
+    }
+
+    .small {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #68778d;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <h1>🎉 Quiz-Gewinnspiel 🎉</h1>
+
+    <div class="subtitle">
+      Wie lautet das Lösungswort?<br>
+      Gebt den richtigen Lösungssatz ein und gewinnt!
+    </div>
+
+    <form id="quizForm">
+      <label for="answer">Euer Lösungssatz:</label>
+      <input
+        id="answer"
+        type="text"
+        autocomplete="off"
+        placeholder="Lösungssatz eingeben"
+        required
+      >
+      <button type="submit">Lösung prüfen</button>
+    </form>
+
+    <div id="wrongMessage" class="message wrong">
+      Leider falsch! Ihr habt zu viel Pils getrunken, trinkt lieber jetzt ein Kölsch
+      und versucht es dann noch einmal.
+    </div>
+
+    <div id="correctMessage" class="message correct">
+      Super, richtige Antwort!
+    </div>
+
+    <section id="prize">
+      <img src="gutschein.png" alt="Gutschein für die Köln Altstadt Virtual Reality Walking Tour">
+
+      <div class="prize-text">
+        Super, richtige Antwort! Jetzt kann es losgehen!<br><br>
+        Schnell uns anrufen, Termin festlegen und gemeinsam ab nach Kölle!
+        Und phantastisch für das junge Glück - Ihr seid eingeladen!
+      </div>
+    </section>
+
+    <div class="small">
+      Viel Erfolg! 🍻
+    </div>
+  </main>
+
+  <script>
+    // Lösungssatz – Groß-/Kleinschreibung wird nicht berücksichtigt.
+    const correctAnswer =
+      "Dat ahle Kölle dernoh jet ze drinke und müffele";
+
+    function normalize(text) {
+      return text
+        .trim()
+        .toLocaleLowerCase("de-DE")
+        .replace(/\s+/g, " ");
+    }
+
+    document.getElementById("quizForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const answer = document.getElementById("answer").value;
+      const wrongMessage = document.getElementById("wrongMessage");
+      const correctMessage = document.getElementById("correctMessage");
+      const prize = document.getElementById("prize");
+
+      wrongMessage.style.display = "none";
+      correctMessage.style.display = "none";
+      prize.style.display = "none";
+
+      if (normalize(answer) === normalize(correctAnswer)) {
+        correctMessage.style.display = "block";
+        prize.style.display = "block";
+        prize.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        wrongMessage.style.display = "block";
+        document.getElementById("answer").focus();
+      }
+    });
+  </script>
+</body>
+</html>
